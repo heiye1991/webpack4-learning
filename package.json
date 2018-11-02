@@ -1,0 +1,23 @@
+{
+  "name": "webpack-learning",
+  "version": "1.0.0",
+  "description": "webpack learning records",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heiye1991/webpack-learning.git"
+  },
+  "author": "'heiye1991'",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heiye1991/webpack-learning/issues"
+  },
+  "homepage": "https://github.com/heiye1991/webpack-learning#readme",
+  "devDependencies": {
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
+  }
+}
