@@ -1,18 +1,14 @@
 /**
  * created by : heiye1991
  * created time: 2018-11-02
- * description: webpack支持ES6 Module、CommonJs和AMD规范
- * AMD 实现浏览器报错 Not allowed to load local resource:bundle不能加载amd打包的js
+ * description: es6 语法
  */
-// es module
-import sum from './sum'
-console.log('+', sum(1, 2))
+import '@babel/polyfill' // 在这里可以设置全局的@babel/polyfill
 
-// commonjs
-var minus = require('./minus')
-console.log('-', minus(3, 2))
+let func = () => {}
+const Num = 10
+let arr = [1, 2, 3]
+arr.includes(2)
+let arr2 = arr.map(item => item * 2)
+console.log(new Set(arr2))
 
-// amd
-/*require(["./multi"], function(multi) {
-  console.log("*", multi(1, 2));
-});*/
