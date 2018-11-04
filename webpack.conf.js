@@ -60,6 +60,18 @@ module.exports = {
           //  使用 :local(.className) 可以被用来在局部作用域中声明 className。局部的作用域标识符会以模块形式暴露出去。使用 :local（无括号）可以为此选择器启用局部模式。:global(.className) 可以用来声明一个明确的全局选择器。使用:global（无括号）可以将此选择器切换至全局模式。
           }
         ]
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
+      },
+      {
+        test: /\.(scss|sass)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.styl$/,
+        use: ['style-loader', 'css-loader', 'stylus-loader']
       }
     ]
   }
