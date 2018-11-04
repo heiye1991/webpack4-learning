@@ -5,9 +5,6 @@
  */
 import base from './css/base.css'
 import common from './css/common.css'
-import './less/button.less'
-import './scss/close.scss'
-import './stylus/small.styl'
 
 var app = document.getElementById('app')
 app.innerHTML = '<div class="'+ base.box +'"></div>'

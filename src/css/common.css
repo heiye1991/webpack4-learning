@@ -6,9 +6,6 @@
 body{
   color: red;
 }
-body div{
-  margin: 20px;
-}
 .bigBox{
   border: 2px solid #000;
 }
