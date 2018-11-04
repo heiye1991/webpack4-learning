@@ -1,0 +1,14 @@
+/**
+ * created by : heiye1991
+ * created time: 2018-11-04
+ */
+body{
+  background: #eee;
+}
+.box {
+  composes: bigBox from './common.css';
+  width: 200px;
+  height: 200px;
+  border-radius: 4px;
+  background: #999;
+}
