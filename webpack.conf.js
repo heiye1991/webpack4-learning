@@ -22,28 +22,28 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader']
+          use: ['css-loader', 'postcss-loader']
         })
       },
       {
         test: /\.less$/,
         use: ExtractTextPlugin.extract({
           fallback:"style-loader",
-          use:['css-loader', 'less-loader']
+          use:['css-loader', 'postcss-loader', 'less-loader']
         })
       },
       {
         test: /\.(scss|sass)$/,
         use: ExtractTextPlugin.extract({
           fallback:"style-loader",
-          use:['css-loader', 'sass-loader']
+          use:['css-loader', 'postcss-loader', 'sass-loader']
         })
       },
       {
         test: /\.styl$/,
         use: ExtractTextPlugin.extract({
           fallback:'style-loader',
-          use:['css-loader', 'stylus-loader']
+          use:['css-loader', 'postcss-loader', 'stylus-loader']
         })
       },
     ]

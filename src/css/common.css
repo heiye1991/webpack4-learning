@@ -11,4 +11,13 @@ body div{
 }
 .bigBox{
   border: 2px solid #000;
+  transform: rotate(45deg);
+}
+
+:root{
+  --mainColor: #333;
+}
+
+p{
+  color: var(--mainColor);
 }
