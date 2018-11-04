@@ -13,6 +13,7 @@ module.exports = {
     pageB: path.join(__dirname, './src/pageB.js')
   },
   output: {
+    publicPath: "./dist/", //用于线上或者cdn
     path: path.join(__dirname, './dist'), // 打包文件的输出目录
     filename: '[name].bundle.js', // 打包生成的文件
     chunkFilename: '[name].chunk.js'
