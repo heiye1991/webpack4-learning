@@ -2,8 +2,9 @@
  * created by : heiye1991
  * created time: 2018-11-02
  * description:
- *    背景图片打包，压缩，base64编码
- *    合成雪碧图没有实现，svg并没有压缩，gif压缩效果并不是很理想，只减少了12kb
+ *    字体图标打包
+ *    匹配字体图标和匹配图片里的svg全都打包到fonts文件夹，未解决。。。。。。
+ *    临时方案，取消字体图标打包里面的svg匹配
  */
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); //引入css分离插件
@@ -71,7 +72,7 @@ module.exports = {
               outputPath: 'images',  // 设置打包后图片存放的文件夹名称
               name: "[name]-[hash:5].min.[ext]",// 打包后的图片命名
               publicPath: './images',  // 给图片设置一个公共路径
-              fallback:'file-loader',//大于limit限制的将转交给指定的loader处理
+              fallback:'file-loader' //大于limit限制的将转交给指定的loader处理
             }
           },
           // 压缩图片img-loader, image-webpack-loader, imagemin-webpack-plugin等都可以实现
@@ -112,9 +113,25 @@ module.exports = {
         ]
       },
       // svg 可以使用inline-svg-loader进行资源嵌入，也可以使用svg-sprite-loader将矢量图资源合并为雪碧图
-      {
+      /*{
         test: /\.svg$/,
         use: 'inline-svg-loader'
+      },*/
+      // 字体处理
+      {
+        test: /\.(woff2?|eot|ttf)(\?.*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 100,
+              name: '[name].[hash:7].[ext]',
+              outputPath: 'fonts',
+              publicPath: './fonts'
+            }
+          }
+        ]
+
       }
     ]
   },
