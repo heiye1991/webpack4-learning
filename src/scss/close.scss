@@ -3,7 +3,10 @@ $bgColor: blue !default;
 .close {
   background-color: $bgColor;
 }
-
+.bg2{
+  background: url("../images/2.png") no-repeat center center;
+  background-size: contain;
+}
 // 无用css
 .c{
   background: #eeeeee;

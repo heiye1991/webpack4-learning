@@ -21,7 +21,14 @@ body div{
 p{
   color: var(--mainColor);
 }
-
+.bg5{
+  background: url("../images/5.gif") no-repeat center center;
+  background-size: contain;
+}
+.bg6{
+  background: url("../images/6.svg") no-repeat center center;
+  background-size: contain;
+}
 /*无用css*/
 .d{
  background: #eeeeee;

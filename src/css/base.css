@@ -17,7 +17,19 @@ body{
   border-radius: 5px;
   background: red;
 }
+.bg0, .bg1, .bg2, .bg3, .bg4, .bg5, .bg6{
+  width: 200px;
+  height: 200px;
+}
 
+.bg0{
+  background: url("../images/0.jpg") no-repeat center center;
+  background-size: contain;
+}
+.bg1{
+  background: url("../images/1.png") no-repeat center center;
+  background-size: contain;
+}
 /*无用css*/
 .e{
   background: #eeeeee;
