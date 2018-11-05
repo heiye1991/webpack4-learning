@@ -15,3 +15,6 @@ console.log(a());
 
 import { chunk } from "lodash-es";
 console.log(chunk([1, 2, 3], 2));
+
+$('div').addClass('new')//验证npm安装的jquery
+jQuery("div").addClass("old");//验证本地jquery

@@ -7,6 +7,7 @@
  *    临时方案，取消字体图标打包里面的svg匹配
  */
 const path = require('path')
+const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); //引入css分离插件
 const PurifyCss = require('purifycss-webpack'); // 引入PurifyCssWebpack插件
 const glob = require('glob');  // 引入glob模块,用于扫描全部html文件中所引用的css
@@ -112,8 +113,9 @@ module.exports = {
           }
         ]
       },
+      /*
       // svg 可以使用inline-svg-loader进行资源嵌入，也可以使用svg-sprite-loader将矢量图资源合并为雪碧图
-      /*{
+      {
         test: /\.svg$/,
         use: 'inline-svg-loader'
       },*/
@@ -131,9 +133,27 @@ module.exports = {
             }
           }
         ]
-
+      },
+      // imports-loader处理第三方js库
+      {
+        test: path.resolve(__dirname, 'src/index.js'),
+        use: [
+          {
+            loader: 'imports-loader',
+            options: {
+              $: 'jquery',
+              jQuery: 'jquery'
+            }
+          }
+        ]
       }
     ]
+  },
+  resolve: {
+    alias: {
+      // 名称和new webpack.ProvidePlugin里的jQuery对应，加$是只把jQuery关键字解析到某个文件下，而不是目录
+      jQuery$: path.resolve(__dirname, "./src/libs/jquery.js")
+    }
   },
   plugins: [
     new ExtractTextPlugin({
@@ -143,6 +163,11 @@ module.exports = {
     new PurifyCss({
       paths: glob.sync(path.join(__dirname, './*.html')) // 同步扫描所有html文件中所引用的css
     }),
+    // 使用第三方js库
+    /*new webpack.ProvidePlugin({
+      $: 'jquery', // npm
+      jQuery: 'jQuery' // 本地Js文件
+    })*/
     // 生成雪碧图，在这里没有实现。。。。。。
     /*new SpritesmithPlugin({
       //设置源icons,即icon的路径，必选项
