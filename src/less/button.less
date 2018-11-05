@@ -1,4 +1,4 @@
-@base: #f938ab;
+@baseColor: #f938ab;
 
 .box-shadow(@style, @c) when (iscolor(@c)) {
   -webkit-box-shadow: @style @c;
@@ -8,7 +8,12 @@
   .box-shadow(@style, rgba(0, 0, 0, @alpha));
 }
 .button {
-  color: saturate(@base, 5%);
-  border-color: lighten(@base, 30%);
+  color: saturate(@baseColor, 5%);
+  border-color: lighten(@baseColor, 30%);
   div { .box-shadow(0 0 5px, 30%) }
+}
+
+// 无用css
+.a{
+  background: #eeeeee;
 }
