@@ -11,6 +11,14 @@
  *    webpack-dev-server 可以实现live-reload 不能打包文件，可以路径重定向，可以使用https，可以在浏览器中显示编译错误，可以接口代理，可以模块热更新
  *    historyApiFallback 路径重定向设置
  *    proxy 代理设置
+ *    模块热更新浏览器不会刷新加载，可以保持应用的数据状态，节省调试时间，样式调试很快 必须有 webpack.HotModuleReplacementPlugin 才能完全启用 HMR，通过--hot命令启动不需要
+ *    热加载样式时，不能把样式用extract-text-webpack-plugin分离，通过style-loader实现热更新
+ *    热加载js需要设置hotOnly为true，还要在js里面加入 if (module.hot) {module.hot.accept()}接受热更新， 里面可以配置参数
+ *    source map配置 选择一种 source map 格式来增强调试过程。不同的值会明显影响到构建(build)和重新构建(rebuild)的速度，通过devtool配置
+ *    也可以直接使用 SourceMapDevToolPlugin/EvalSourceMapDevToolPlugin 来替代使用 devtool 选项
+ *    source map开发环境值：eval，cheap-eval-source-map，cheap-module-eval-source-map，eval-source-map
+ *    source map生产环境值：none，source-map，hidden-source-map，nosources-source-map
+ *    各类型css使用source map需要设置options.sourceMap,style-loader里的options.singleton不能喝sourcemap一起用，不然都注入到style标签里了，没法调试
  *
  */
 const path = require('path')
@@ -43,38 +51,120 @@ module.exports = {
       // css打包
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader'],
-          publicPath: '../'  // 给背景图片设置一个公共路径
-        })
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              // singleton: true,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
       // less打包
       {
         test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback:"style-loader",
-          use:['css-loader', 'postcss-loader', 'less-loader'],
-          publicPath: '../'  // 给背景图片设置一个公共路径
-        })
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              // singleton: true,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
       // sass/scss 打包
       {
         test: /\.(scss|sass)$/,
-        use: ExtractTextPlugin.extract({
-          fallback:"style-loader",
-          use:['css-loader', 'postcss-loader', 'sass-loader'],
-          publicPath: '../'  // 给背景图片设置一个公共路径
-        })
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              // singleton: true,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
       // stylus打包
       {
         test: /\.styl$/,
-        use: ExtractTextPlugin.extract({
-          fallback:'style-loader',
-          use:['css-loader', 'postcss-loader', 'stylus-loader'],
-          publicPath: '../'  // 给背景图片设置一个公共路径
-        })
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              // singleton: true,
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'stylus-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       },
       // 图片打包
       {
@@ -163,7 +253,9 @@ module.exports = {
       // chunks: [], // 指定打包生成的HTML引用的js
       // excludeChunks: [] //排除那些js不打包到生成的js
     }),
-    new CleanWebpackPlugin(['dist'])  // 所要清理的文件夹名称
+    new CleanWebpackPlugin(['dist']),  // 所要清理的文件夹名称
+    new webpack.HotModuleReplacementPlugin(), // webpack 内置的 HMR 插件
+    new webpack.NamedModulesPlugin() // 当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境
   ],
   optimization: {
     minimize: true // 默认false不压缩js，true压缩js
@@ -203,6 +295,9 @@ module.exports = {
         logLevel: 'debug', // 日志['debug', 'info', 'warn', 'error', 'silent']. Default: 'info'
         headers: {}, // 可以添加一些请求信息，如cookie等
       }
-    }
-  }
+    },
+    hot: true,     // 模块热更新
+    hotOnly: true // js修改不会刷新
+  },
+  devtool: "source-map"
 }
