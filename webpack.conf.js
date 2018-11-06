@@ -7,6 +7,11 @@
  *    webpack -w 或者webpack -watch 本地监听服务变化自动打包
  *    webpack-dev-server 官方推荐的开发服务器，可以集成多种功能
  *    express+webpack-dev-middleware 第三方搭建开发环境，可以配置自己想要的服务
+ *
+ *    webpack-dev-server 可以实现live-reload 不能打包文件，可以路径重定向，可以使用https，可以在浏览器中显示编译错误，可以接口代理，可以模块热更新
+ *    historyApiFallback 路径重定向设置
+ *    proxy 代理设置
+ *
  */
 const path = require('path')
 const webpack = require('webpack')
@@ -16,14 +21,14 @@ const glob = require('glob');  // 引入glob模块,用于扫描全部html文件�
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 引入HtmlWebpackPlugin插件
 const CleanWebpackPlugin = require('clean-webpack-plugin'); // 引入CleanWebpackPlugin插件
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     index: path.join(__dirname, './src/index.js')
   },
   output: {
-    publicPath: './', // 打包生成HTML时
-    path: path.resolve(__dirname, './dist'), // 打包文件的输出目录
-    filename: 'js/[name].bundle-[hash:5].js' // 打包生成的文件
+    path: path.join(__dirname, '/dist'), // 打包文件的输出目录
+    filename: 'js/[name].bundle-[hash:5].js', // 打包生成的文件
+    // publicPath: '/' //上线或者cdn使用，文件前面加上对应的地址
   },
   module: {
     rules: [
@@ -140,9 +145,9 @@ module.exports = {
       filename: 'css/[name]-[hash:5].min.css', //生成文件的文件名。可能包含 [name], [id] and [contenthash]
       // allChunks: false // 只包括初始化css, 不包括异步加载的CSS---从所有额外的 chunk(additional chunk) 提取（默认情况下false，它仅从初始chunk(initial chunk) 中提取）当使用 CommonsChunkPlugin 并且在公共 chunk 中有提取的 chunk（来自ExtractTextPlugin.extract）时，allChunks **必须设置为 true
     }),
-    // new PurifyCss({
-    //   paths: glob.sync(path.join(__dirname, './*.html')) // 同步扫描所有html文件中所引用的css, 会删除无用的css
-    // }),
+    new PurifyCss({
+      paths: glob.sync(path.join(__dirname, './*.html')) // 同步扫描所有html文件中所引用的css, 会删除无用的css，但是css代码不能压缩了
+    }),
     // 使用第三方js库
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -158,9 +163,46 @@ module.exports = {
       // chunks: [], // 指定打包生成的HTML引用的js
       // excludeChunks: [] //排除那些js不打包到生成的js
     }),
-    new CleanWebpackPlugin(['dist']),  // 所要清理的文件夹名称
+    new CleanWebpackPlugin(['dist'])  // 所要清理的文件夹名称
   ],
   optimization: {
     minimize: true // 默认false不压缩js，true压缩js
+  },
+  devServer: {
+    port: "8088",  // 设置端口号为8088
+    // inline: true,  // 在 dev-server 的两种不同模式之间切换。默认情况下true，应用程序启用内联模式(inline mode)。这意味着一段处理实时重载的脚本被插入到你的包(bundle)中，并且构建消息将会出现在浏览器控制台,false 使用 iframe 模式,会在头部显示进度等信息
+    // historyApiFallback: true, //当使用 HTML5 History API 时 任意的 404 响应都可能需要被替代为 index.html，简单配置，也可以使用对象配置
+    historyApiFallback: {
+      rewrites: [
+        /*// 确定的页面
+        {
+          from: '/pages/a',
+          to: '/pages/a.html'
+        },
+        // 正则匹配
+        {
+          from: /^\/b/,
+          to: '/pages/b.html'
+        },*/
+        // 函数正则匹配
+        {
+          from: /^\/([a-zA-Z0-9]+\/?)([a-zA-Z0-9]+)/,
+          to: function (context) {
+            return '/' + context.match[1] + context.match[2]+ '.html';
+          }
+        }
+      ]
+    },
+    // 代理接口
+    proxy: {
+      // '/api': 'http://localhost:3000' // 简单使用
+      '/api': {
+        target: 'https://www.thepaper.cn',
+        changeOrigin: true, // 允许跨域
+        pathRewrite: {'^/api' : ''}, // 重写路径
+        logLevel: 'debug', // 日志['debug', 'info', 'warn', 'error', 'silent']. Default: 'info'
+        headers: {}, // 可以添加一些请求信息，如cookie等
+      }
+    }
   }
 }

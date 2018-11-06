@@ -18,3 +18,9 @@ console.log(chunk([1, 2, 3], 2));
 
 $('div').addClass('new')//验证npm安装的jquery
 jQuery("div").addClass("old");//验证本地jquery
+
+$.get('/api/cont_vote_json.jsp',{
+  contid: 2605609
+},function (data) {
+  console.log(data)
+})
