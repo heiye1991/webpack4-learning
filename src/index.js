@@ -33,6 +33,7 @@ $.get('/api/cont_vote_json.jsp', {
 });
 
 if (module.hot) {
+  module.hot.accept();
   // 通过删除已有的元素,避免每次热更新都重新多加载一份元素，然后重新加载一份元素
   module.hot.accept('./js/a', function () {
     oneEl.removeChild(list);
