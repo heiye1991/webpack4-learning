@@ -20,6 +20,10 @@
  *    source map生产环境值：none，source-map，hidden-source-map，nosources-source-map
  *    各类型css使用source map需要设置options.sourceMap,style-loader里的options.singleton不能喝sourcemap一起用，不然都注入到style标签里了，没法调试
  *
+ *    eslint 语法检查
+ *    浏览器显示报警错误信息，在devtool里面配置overlay为true
+ *    .eslintrc.js配置相关eslint设置
+ *
  */
 const path = require('path')
 const webpack = require('webpack')
@@ -43,10 +47,22 @@ module.exports = {
       // js 打包
       {
         test: /\.js$/,
-        use: {
-          loader: "babel-loader"
-        },
-        exclude: /node_modules/
+        use: [
+          {
+            loader: "babel-loader"
+          },
+          {
+            loader: "eslint-loader",
+            options: {
+              formatter: require("eslint-friendly-formatter"), // 报错时使用更友好的格式
+              // 默认情况下false，加载程序将根据eslint错误/警告计数自动调整错误报告,可以通过将emitError，emitWarning设为true强制使用
+              emitError: true,
+              emitWarning: true,
+            }
+          }
+        ],
+        exclude: /node_modules/,
+        include: [path.resolve(__dirname, 'src')]
       },
       // css打包
       {
@@ -297,7 +313,8 @@ module.exports = {
       }
     },
     hot: true,     // 模块热更新
-    hotOnly: true // js修改不会刷新
+    hotOnly: true, // js修改不会刷新
+    overlay: true // eslint 浏览器展示错误报警信息
   },
   devtool: "source-map"
 }

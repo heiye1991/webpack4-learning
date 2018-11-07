@@ -4,7 +4,7 @@
  * description:
  */
 export function renderA(str) {
-  console.log(str)
+  console.log(str);
 }
 export function composeA() {
   let ul = document.createElement('ul');
@@ -12,6 +12,6 @@ export function composeA() {
     <li>1112</li>
     <li>222</li>
     <li>333</li>
-  `
-  return ul
+  `;
+  return ul;
 }
