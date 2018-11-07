@@ -7,6 +7,8 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
+const historyApiFallback = require('./historyApiFallback');
+const proxy = require('./proxy');
 const styleLoader = [
   {
     loader: 'style-loader',
@@ -31,6 +33,9 @@ const styleLoader = [
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
+  output: {
+    publicPath: '/'
+  },
   module: {
     rules: [
       // js 打包以及eslint检查
@@ -112,38 +117,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     port: '8088',  // 设置端口号为8088
     // inline: true,  // 在 dev-server 的两种不同模式之间切换。默认情况下true，应用程序启用内联模式(inline mode)。这意味着一段处理实时重载的脚本被插入到你的包(bundle)中，并且构建消息将会出现在浏览器控制台,false 使用 iframe 模式,会在头部显示进度等信息
     // historyApiFallback: true, //当使用 HTML5 History API 时 任意的 404 响应都可能需要被替代为 index.html，简单配置，也可以使用对象配置
-    historyApiFallback: {
-      rewrites: [
-        /*// 确定的页面
-        {
-          from: '/pages/a',
-          to: '/pages/a.html'
-        },
-        // 正则匹配
-        {
-          from: /^\/b/,
-          to: '/pages/b.html'
-        },*/
-        // 函数正则匹配
-        {
-          from: /^\/([a-zA-Z0-9]+\/?)([a-zA-Z0-9]+)/,
-          to: function (context) {
-            return '/' + context.match[1] + context.match[2]+ '.html';
-          }
-        }
-      ]
-    },
+    historyApiFallback: historyApiFallback,
     // 代理接口
-    proxy: {
-      // '/api': 'http://localhost:3000' // 简单使用
-      '/api': {
-        target: 'https://www.thepaper.cn',
-        changeOrigin: true, // 允许跨域
-        pathRewrite: {'^/api' : ''}, // 重写路径
-        logLevel: 'debug', // 日志['debug', 'info', 'warn', 'error', 'silent']. Default: 'info'
-        headers: {} // 可以添加一些请求信息，如cookie等
-      }
-    },
+    proxy: proxy,
     hot: true,     // 模块热更新
     hotOnly: true, // js修改不会刷新
     overlay: true // eslint 浏览器展示错误报警信息

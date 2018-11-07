@@ -13,6 +13,9 @@ const baseWebpackConfig = require('./webpack.base.conf');
 
 const buildWebpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
+  output: {
+    // publicPath: '' //上线或者cdn使用，文件前面加上对应的地址
+  },
   module: {
     rules: [
       // js 打包

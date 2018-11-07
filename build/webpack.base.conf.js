@@ -36,7 +36,6 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../dist'), // 打包文件的输出目录
     filename: 'js/[name].bundle-[hash:5].js' // 打包生成的文件
-    // publicPath: '/' //上线或者cdn使用，文件前面加上对应的地址
   },
   module: {
     rules: [
