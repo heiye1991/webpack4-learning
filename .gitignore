@@ -2,6 +2,7 @@
 /node_modules/
 /optimizationDemo/node_modules/
 /optimizationDemo/dist/
+/longcacheDemo/dist/
 /dist/
 /.idea/
 /typings/
