@@ -8,7 +8,9 @@
     "dev": "cross-env ENV=development webpack-dev-server --inline --progress --config ./build/webpack.dev.conf.js --open",
     "build": "cross-env ENV=production webpack --config ./build/webpack.prod.conf.js",
     "start": "node ./build/server.js",
-    "cache": "webpack --config ./longcacheDemo/webpack.config.js"
+    "cache": "webpack --config ./longcacheDemo/webpack.config.js",
+    "multi": "webpack --config ./multipageDemo/webpack.multi.config.js",
+    "single": "webpack --config ./multipageDemo/webpack.single.config.js"
   },
   "repository": {
     "type": "git",
@@ -63,6 +65,7 @@
     "less-loader": "^4.1.0",
     "node-sass": "^4.10.0",
     "opn": "^5.4.0",
+    "parallel-webpack": "^2.3.0",
     "postcss-cssnext": "^3.1.0",
     "postcss-loader": "^3.0.0",
     "postcss-sprites": "^4.2.1",
