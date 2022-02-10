@@ -63,7 +63,7 @@
     "inline-svg-loader": "^0.0.1",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "node-sass": "^4.10.0",
+    "node-sass": "^7.0.0",
     "opn": "^5.4.0",
     "parallel-webpack": "^2.3.0",
     "postcss-cssnext": "^3.1.0",
